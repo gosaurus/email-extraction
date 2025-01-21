@@ -6,11 +6,12 @@
 const fs = require('fs');
 
 function readText(filePath)  {
-  fs.readFile('test.txt', 'utf-8', (err, data) => {
-    if(err) { throw err; }
-  console.log('data: ', data);
-  })};
+  const data = fs.readFileSync(filePath, 'utf-8');
+  return data 
+}
 
-const input = fs.readText('test.txt');
+const input = readText('test.txt');
+const emailArray = input.split(" ");
+console.log(emailArray);
 
-console.log(input);
+const re = /(.*)@softwire.com/;
