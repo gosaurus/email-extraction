@@ -11,7 +11,9 @@ function readText(filePath)  {
 }
 
 const input = readText('test.txt');
-const emailArray = input.split(" ");
-console.log(emailArray);
 
-const re = /(.*)@softwire.com/;
+const re = /[A-Za-z.'_%+-]+@softwire\.com/g;
+
+const array = input.match(re);
+console.log(array);
+console.log(array.length);
