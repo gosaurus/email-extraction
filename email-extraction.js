@@ -1,17 +1,14 @@
-// let counter = 0;
-
-// split text by space
-
-// for each 'block' of text, count number of times [space]string + ""
 const fs = require('fs');
 
 function readText(filePath)  {
-  const data = fs.readFileSync(filePath, 'utf-8');
-  return data 
+  return fs.readFileSync(filePath, { encoding: 'utf-8'});
 }
 
-const input = readText('test.txt');
-const emailArray = input.split(" ");
-console.log(emailArray);
 
-const re = /(.*)@softwire.com/;
+const input = readText('test.txt');
+const emailToMatch = /\b[0-9A-Za-z.'_%+-]+[^\W\.]@softwire\.com\b/g;
+
+const array = [...input.matchAll(emailToMatch)];
+const matches = array.length;
+
+console.log(matches);
