@@ -1,8 +1,4 @@
-// let counter = 0;
 
-// split text by space
-
-// for each 'block' of text, count number of times [space]string + ""
 const fs = require('fs');
 
 function readText(filePath)  {
@@ -12,8 +8,19 @@ function readText(filePath)  {
 
 const input = readText('test.txt');
 
-const re = /[A-Za-z.'_%+-]+@softwire\.com/g;
+// regex for softwire.com
+const re = /[\w\.-]+@softwire\.com/g;
+const arraySoftwire = input.match(re);
 
-const array = input.match(re);
-console.log(array);
-console.log(array.length);
+console.log(arraySoftwire);
+console.log(arraySoftwire.length);
+
+// regex for emails with all domains
+const reEmails = /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/g;
+const arrayEmails = input.match(reEmails);
+
+console.log(arrayEmails);
+
+let dictionaryDomains = {};
+
+
