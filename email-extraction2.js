@@ -9,34 +9,49 @@ function readText(filePath)  {
 const input = readText('test.txt');
 
 
-const SoftwireEmails = (input) => {
+const softwireEmails = (input) => {
 	// regex expession for softwire.com
 	const re = /\b[\w\.'%+-]+[\W\S]@softwire\.com\b/g;
 	const arraySoftwire = input.match(re);
 	return `Number of Softwire emails: ${arraySoftwire.length}`;
 }; 
 
-const DomainEmails = (input) => {
+function findDomainInArray(domainArray, domainRegex) {
+	const objInDomainArray = domainArray.find(domainObj => domainObj.domain == domainRegex);
+	return objInDomainArray;
+}
+
+const domainEmails = (input) => {
 	// regex expression for emails with all domains, including 'local@example.org.uk' and 'local@example.uk'
 	const reAnyEmail = /\b[\w\.'%+-]+[\w\s\.]@{1}([\w-]+\.{1}[A-Za-z]+?[A-Za-z]*[\.]?[A-Za-z]+?)\b/g;
 	const matches = [...input.matchAll(reAnyEmail)]; //returns ITERATOR wtih matches, including capturing groups
 
 
 	// Parse into dictionary
-	const domains = {};
+	const domainArray = [];
 	for (const match of matches) {
-		const domain = match[1];
-		if (domains[domain]) {
-			domains[domain]++
+		const domainRegex = match[1];
+		const keyValue = {};
+		const objInDomainArray = findDomainInArray(domainArray, domainRegex);
+		if (objInDomainArray !== undefined) {
+			// console.log(`${domainRegex} in DomainArray`);
+			objInDomainArray.count++;
 		}
 		else {
-			domains[domain] = 1;
+			keyValue["domain"] = domainRegex;
+			keyValue["count"] = 1;
+			domainArray.push(keyValue);
 		}
 	};
-	return domains;
+	return domainArray;
 }
 
 
 // main program
-console.log(SoftwireEmails(input));
-console.log(DomainEmails(input));
+console.log(`Count of all softwire.com emails:\n${softwireEmails(input)}`);
+console.log(`Count of all domains in file:\n${domainEmails(input)}`);
+
+// sort to most common
+const sorted = domainEmails(input);
+sorted.sort((a,b) => b.count - a.count);
+console.log(`Top 10 most common email domains:\n${sorted.slice(0,9)}`);
